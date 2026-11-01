@@ -7,7 +7,11 @@ class AstroSholatApp {
       lng: 110.3695,
       tz: 7,
       method: "KEMENAG",
-      currentResult: null
+      currentResult: null,
+      deviceHeading: 0,
+      compassActive: false,
+      qiblaAzimuth: 294.72,
+      qiblaDistance: 8342
     };
 
     this.el = {
@@ -15,6 +19,8 @@ class AstroSholatApp {
       calcMethod: document.getElementById("calc-method"),
       btnGps: document.getElementById("btn-gps"),
       btnRecalc: document.getElementById("btn-recalc"),
+      btnCompass: document.getElementById("btn-compass"),
+      compassBadge: document.getElementById("compass-badge"),
       inputLat: document.getElementById("input-lat"),
       inputLng: document.getElementById("input-lng"),
       inputTz: document.getElementById("input-tz"),
@@ -85,6 +91,7 @@ class AstroSholatApp {
     });
 
     this.el.btnGps.addEventListener("click", () => this.detectGPS());
+    this.el.btnCompass.addEventListener("click", () => this.initCompassSensor());
   }
 
   syncInputs() {
@@ -109,12 +116,65 @@ class AstroSholatApp {
         this.el.gpsStatus.textContent = "GPS Aktif Akurat";
         this.recalculate();
       },
-      (err) => {
+      () => {
         this.el.gpsStatus.textContent = "GPS Gagal";
         alert("Gagal mengakses GPS: Pastikan izin lokasi diaktifkan di browser HP.");
       },
       { enableHighAccuracy: true, timeout: 10000 }
     );
+  }
+
+  async initCompassSensor() {
+    if (this.state.compassActive) return;
+
+    // Penanganan izin khusus untuk perangkat iOS 13+
+    if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
+      try {
+        const permission = await DeviceOrientationEvent.requestPermission();
+        if (permission === "granted") {
+          window.addEventListener("deviceorientation", (e) => this.handleOrientation(e), true);
+          this.setCompassActiveUI();
+        } else {
+          alert("Izin akses sensor kompas ditolak.");
+        }
+      } catch (err) {
+        alert("Gagal meminta izin sensor kompas: " + err.message);
+      }
+    } else if ("ondeviceorientationabsolute" in window) {
+      // Standar Android Chrome (Absolute Magnetic North)
+      window.addEventListener("deviceorientationabsolute", (e) => this.handleOrientation(e), true);
+      this.setCompassActiveUI();
+    } else if ("ondeviceorientation" in window) {
+      window.addEventListener("deviceorientation", (e) => this.handleOrientation(e), true);
+      this.setCompassActiveUI();
+    } else {
+      alert("Perangkat atau browser ini tidak memiliki sensor magnetometer.");
+    }
+  }
+
+  setCompassActiveUI() {
+    this.state.compassActive = true;
+    this.el.compassBadge.textContent = "Live Magnetik";
+    this.el.compassBadge.classList.remove("pill-warn");
+    this.el.btnCompass.textContent = "✓ Sensor Kompas Aktif (Putar HP)";
+    this.el.btnCompass.style.opacity = "0.7";
+  }
+
+  handleOrientation(event) {
+    let heading = null;
+
+    if (typeof event.webkitCompassHeading === "number") {
+      // iOS Safari: langsung derajat terhadap Utara Magnetik
+      heading = event.webkitCompassHeading;
+    } else if (event.alpha !== null) {
+      // Android: alpha berlawanan arah jarum jam, konversi ke searah jarum jam
+      heading = (360 - event.alpha) % 360;
+    }
+
+    if (heading !== null && !isNaN(heading)) {
+      this.state.deviceHeading = heading;
+      this.renderQibla();
+    }
   }
 
   recalculate() {
@@ -127,6 +187,10 @@ class AstroSholatApp {
       this.state.method
     );
     this.state.currentResult = res;
+
+    const qibla = AstroEngine.calculateQibla(this.state.lat, this.state.lng);
+    this.state.qiblaAzimuth = qibla.azimuth;
+    this.state.qiblaDistance = qibla.distanceKm;
 
     this.renderEphemeris(res.ephemeris);
     this.renderQibla();
@@ -159,9 +223,19 @@ class AstroSholatApp {
   }
 
   renderQibla() {
-    const qibla = AstroEngine.calculateQibla(this.state.lat, this.state.lng);
-    this.el.qiblaDeg.textContent = `${qibla.azimuth.toFixed(2)}°`;
-    this.el.qiblaDist.textContent = `${qibla.distanceKm.toLocaleString("id-ID")} km`;
+    const azimuth = this.state.qiblaAzimuth;
+    const heading = this.state.deviceHeading;
+
+    this.el.qiblaDeg.textContent = `${azimuth.toFixed(1)}° / ${Math.round(heading)}°`;
+    this.el.qiblaDist.textContent = `${this.state.qiblaDistance.toLocaleString("id-ID")} km`;
+
+    // Cek apakah arah HP sudah lurus dengan arah Kiblat (toleransi ±3.5 derajat)
+    const diff = Math.abs(((azimuth - heading + 540) % 360) - 180);
+    const isAligned = this.state.compassActive && diff <= 3.5;
+
+    if (this.state.compassActive) {
+      this.el.compassBadge.textContent = isAligned ? "★ Lurus Kiblat!" : "Live Magnetik";
+    }
 
     const canvas = this.el.qiblaCanvas;
     const ctx = canvas.getContext("2d");
@@ -171,55 +245,70 @@ class AstroSholatApp {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Lingkaran Luar Emas
+    // Indikator Panah Statis di Puncak Atas (Penanda Arah Hadap HP)
     ctx.beginPath();
-    ctx.arc(cx, cy, r, 0, Math.PI * 2);
-    ctx.strokeStyle = "rgba(212, 175, 55, 0.35)";
-    ctx.lineWidth = 2;
+    ctx.moveTo(cx, cy - r - 15);
+    ctx.lineTo(cx - 7, cy - r - 4);
+    ctx.lineTo(cx + 7, cy - r - 4);
+    ctx.closePath();
+    ctx.fillStyle = isAligned ? "#10b981" : "#d4af37";
+    ctx.fill();
+
+    // Putar Piringan Kompas Sebesar -deviceHeading
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(AstroEngine.dtr(-heading));
+
+    // Lingkaran Luar Kompas
+    ctx.beginPath();
+    ctx.arc(0, 0, r, 0, Math.PI * 2);
+    ctx.strokeStyle = isAligned ? "#10b981" : "rgba(212, 175, 55, 0.38)";
+    ctx.lineWidth = isAligned ? 3.5 : 2;
     ctx.stroke();
 
-    // Tanda Derajat Kompas
+    // Garis Derajat Kompas
     for (let i = 0; i < 360; i += 15) {
       const rad = AstroEngine.dtr(i - 90);
       const inner = i % 90 === 0 ? r - 12 : r - 6;
       ctx.beginPath();
-      ctx.moveTo(cx + Math.cos(rad) * inner, cy + Math.sin(rad) * inner);
-      ctx.lineTo(cx + Math.cos(rad) * r, cy + Math.sin(rad) * r);
-      ctx.strokeStyle = i % 90 === 0 ? "#d4af37" : "rgba(255,255,255,0.2)";
+      ctx.moveTo(Math.cos(rad) * inner, Math.sin(rad) * inner);
+      ctx.lineTo(Math.cos(rad) * r, Math.sin(rad) * r);
+      ctx.strokeStyle = i === 0 ? "#ff2a5f" : (i % 90 === 0 ? "#d4af37" : "rgba(255,255,255,0.2)");
       ctx.lineWidth = i % 90 === 0 ? 2 : 1;
       ctx.stroke();
     }
 
     // Huruf Mata Angin
-    ctx.fillStyle = "#94a3b8";
     ctx.font = "bold 12px sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText("U", cx, cy - r + 22);
-    ctx.fillText("T", cx + r - 22, cy);
-    ctx.fillText("S", cx, cy + r - 22);
-    ctx.fillText("B", cx - r + 22, cy);
+    ctx.fillStyle = "#ff2a5f";
+    ctx.fillText("U", 0, -r + 22);
+    ctx.fillStyle = "#94a3b8";
+    ctx.fillText("T", r - 22, 0);
+    ctx.fillText("S", 0, r - 22);
+    ctx.fillText("B", -r + 22, 0);
 
-    // Jarum Arah Kiblat
-    const qRad = AstroEngine.dtr(qibla.azimuth - 90);
+    // Jarum Arah Kiblat (Ikut berputar bersama piringan kompas)
+    const qRad = AstroEngine.dtr(azimuth - 90);
     ctx.save();
-    ctx.translate(cx, cy);
     ctx.rotate(qRad);
 
     ctx.beginPath();
     ctx.moveTo(0, -7);
-    ctx.lineTo(r - 18, 0);
+    ctx.lineTo(r - 16, 0);
     ctx.lineTo(0, 7);
     ctx.closePath();
-    ctx.fillStyle = "#d4af37";
+    ctx.fillStyle = isAligned ? "#10b981" : "#d4af37";
     ctx.fill();
 
     ctx.restore();
+    ctx.restore();
 
-    // Titik Tengah
+    // Titik Poros Tengah
     ctx.beginPath();
     ctx.arc(cx, cy, 5, 0, Math.PI * 2);
-    ctx.fillStyle = "#10b981";
+    ctx.fillStyle = isAligned ? "#10b981" : "#d4af37";
     ctx.fill();
   }
 
@@ -236,7 +325,6 @@ class AstroSholatApp {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Dasar Gelap Bulan
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, Math.PI * 2);
     ctx.fillStyle = "#0f2922";
@@ -245,7 +333,6 @@ class AstroSholatApp {
     ctx.lineWidth = 1.5;
     ctx.stroke();
 
-    // Bagian Bulan yang Terkena Cahaya Matahari
     const phase = moon.phaseRatio;
     ctx.save();
     ctx.beginPath();

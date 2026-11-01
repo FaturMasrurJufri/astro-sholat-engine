@@ -57,7 +57,7 @@
         <h2 id="next-prayer-name" class="next-prayer-title">Maghrib</h2>
         <div id="countdown-timer" class="countdown-digits">00:00:00</div>
         <div class="current-time-row">
-          <span id="live-date">Minggu, 1 Nov 2026</span>
+          <span id="live-date">Senin, 2 Nov 2026</span>
           <span class="dot-sep">•</span>
           <span id="live-clock">00:00:00</span>
         </div>
@@ -86,29 +86,33 @@
       </div>
     </section>
 
-    <!-- Baris 2: Jadwal 7 Waktu Salat -->
+    <!-- Baris 2: Jadwal Waktu Salat -->
     <section class="prayer-section">
       <div class="section-heading">
         <h3>Jadwal Waktu Salat Presisi</h3>
         <span class="sub-info">Dihitung murni dengan algoritma astronomi tanpa API eksternal</span>
       </div>
-      <div id="prayer-grid" class="prayer-grid">
-        <!-- Di-render otomatis oleh app.js -->
-      </div>
+      <div id="prayer-grid" class="prayer-grid"></div>
     </section>
 
-    <!-- Baris 3: Kompas Kiblat Visual, Fase Bulan & Data Ephemeris Matahari -->
+    <!-- Baris 3: Kompas Kiblat Live, Fase Bulan & Data Ephemeris -->
     <section class="astro-grid">
-      <!-- Kompas Kiblat -->
+      <!-- Kompas Kiblat Interaktif -->
       <article class="glass-card astro-box">
-        <div class="card-tag">ARAH KIBLAT & GEODESI</div>
-        <div class="canvas-wrapper">
-          <canvas id="qibla-canvas" width="220" height="220"></canvas>
+        <div class="card-header-flex" style="margin-bottom: 0;">
+          <span class="card-tag">KOMPAS KIBLAT LIVE</span>
+          <span id="compass-badge" class="status-pill pill-warn">Sensor Nonaktif</span>
         </div>
+        <div class="canvas-wrapper">
+          <canvas id="qibla-canvas" width="230" height="230"></canvas>
+        </div>
+        <button id="btn-compass" class="btn-outline-gold" style="margin-top: 0; margin-bottom: 0.85rem;">
+          🧭 Aktifkan Sensor Kompas HP
+        </button>
         <div class="astro-stats">
           <div class="stat-item">
-            <span class="stat-label">Azimuth Kiblat</span>
-            <strong id="qibla-deg" class="stat-val gold-text">294.72°</strong>
+            <span class="stat-label">Azimuth / Arah HP</span>
+            <strong id="qibla-deg" class="stat-val gold-text">294.7° / 0°</strong>
           </div>
           <div class="stat-item">
             <span class="stat-label">Jarak ke Ka'bah</span>

@@ -38,7 +38,6 @@ body {
   padding: 0 1.25rem;
 }
 
-/* Header Mewah */
 .luxury-header {
   border-bottom: 1px solid var(--gold-dim);
   background: rgba(4, 13, 10, 0.85);
@@ -88,7 +87,6 @@ body {
   letter-spacing: 0.08em;
 }
 
-/* Identitas Developer & Efek Streaming Kelap-Kelip */
 .dev-identity {
   display: inline-flex;
   align-items: center;
@@ -134,7 +132,6 @@ body {
   font-weight: 700;
 }
 
-/* Header Controls */
 .header-controls {
   display: flex;
   flex-wrap: wrap;
@@ -208,7 +205,6 @@ select:focus, input:focus {
   border-color: var(--gold-primary);
 }
 
-/* Glass Cards */
 .glass-card {
   background: var(--bg-card);
   border: 1px solid var(--gold-dim);
@@ -226,7 +222,6 @@ select:focus, input:focus {
   text-transform: uppercase;
 }
 
-/* Hero Section */
 .hero-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
@@ -281,6 +276,13 @@ select:focus, input:focus {
   background: rgba(16, 185, 129, 0.15);
   color: #34d399;
   border: 1px solid rgba(16, 185, 129, 0.3);
+  font-weight: 600;
+}
+
+.pill-warn {
+  background: rgba(212, 175, 55, 0.12);
+  color: var(--gold-light);
+  border-color: rgba(212, 175, 55, 0.3);
 }
 
 .coord-inputs {
@@ -304,7 +306,6 @@ select:focus, input:focus {
   width: 100%;
 }
 
-/* Prayer Times Grid */
 .prayer-section {
   margin-bottom: 2.25rem;
 }
@@ -370,7 +371,6 @@ select:focus, input:focus {
   color: #ffffff;
 }
 
-/* Astro Instruments Grid */
 .astro-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -387,7 +387,7 @@ select:focus, input:focus {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 1rem 0;
+  margin: 0.65rem 0;
 }
 
 .astro-stats {
@@ -409,7 +409,7 @@ select:focus, input:focus {
 }
 
 .stat-val {
-  font-size: 1rem;
+  font-size: 0.95rem;
   margin-top: 0.15rem;
 }
 

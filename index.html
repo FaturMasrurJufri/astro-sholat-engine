@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AstroSholat — Kalkulator Astronomi Waktu Salat & Kiblat</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="ambient-glow"></div>
+
+  <header class="luxury-header">
+    <div class="container header-grid">
+      <div class="brand-box">
+        <span class="arabic-ornament">﷽</span>
+        <h1 class="app-title">AstroSholat <span class="gold-badge">PRO</span></h1>
+        <div class="dev-identity">
+          <span class="live-dot"></span>
+          <span class="dev-text">developer : <strong>fatur62</strong></span>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <div class="control-item">
+          <label for="preset-city">Lokasi Cepat</label>
+          <select id="preset-city">
+            <option value="-7.7956,110.3695,7">Yogyakarta (WIB)</option>
+            <option value="-6.2088,106.8456,7">Jakarta (WIB)</option>
+            <option value="-6.9175,107.6191,7">Bandung (WIB)</option>
+            <option value="-7.2575,112.7521,7">Surabaya (WIB)</option>
+            <option value="-5.1477,119.4327,8">Makassar (WITA)</option>
+            <option value="21.4225,39.8262,3">Makkah Al-Mukarramah</option>
+          </select>
+        </div>
+        <div class="control-item">
+          <label for="calc-method">Metode Hisab</label>
+          <select id="calc-method">
+            <option value="KEMENAG">Kemenag RI (20° / 18°)</option>
+            <option value="MWL">Muslim World League (18° / 17°)</option>
+            <option value="ISNA">ISNA Amerika Utara (15° / 15°)</option>
+            <option value="MAKKAH">Umm al-Qura Makkah (18.5°)</option>
+            <option value="EGYPT">Otoritas Mesir (19.5° / 17.5°)</option>
+          </select>
+        </div>
+        <button id="btn-gps" class="btn-gold" title="Deteksi Koordinat GPS Akurat">
+          📍 Gunakan GPS
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Baris 1: Hero Countdown & Parameter Koordinat -->
+    <section class="hero-grid">
+      <div class="glass-card countdown-card">
+        <div class="card-tag">WAKTU SALAT BERIKUTNYA</div>
+        <h2 id="next-prayer-name" class="next-prayer-title">Maghrib</h2>
+        <div id="countdown-timer" class="countdown-digits">00:00:00</div>
+        <div class="current-time-row">
+          <span id="live-date">Minggu, 1 Nov 2026</span>
+          <span class="dot-sep">•</span>
+          <span id="live-clock">00:00:00</span>
+        </div>
+      </div>
+
+      <div class="glass-card coord-card">
+        <div class="card-header-flex">
+          <span class="card-tag">PARAMETER OBSERVATORIUM</span>
+          <span id="gps-status" class="status-pill">Mode Preset</span>
+        </div>
+        <div class="coord-inputs">
+          <div class="input-field">
+            <label for="input-lat">Lintang (Latitude)</label>
+            <input type="number" id="input-lat" step="0.0001" value="-7.7956">
+          </div>
+          <div class="input-field">
+            <label for="input-lng">Bujur (Longitude)</label>
+            <input type="number" id="input-lng" step="0.0001" value="110.3695">
+          </div>
+          <div class="input-field">
+            <label for="input-tz">Zona Waktu (UTC)</label>
+            <input type="number" id="input-tz" step="1" value="7">
+          </div>
+        </div>
+        <button id="btn-recalc" class="btn-outline-gold">Hitung Ulang Ephemeris</button>
+      </div>
+    </section>
+
+    <!-- Baris 2: Jadwal 7 Waktu Salat -->
+    <section class="prayer-section">
+      <div class="section-heading">
+        <h3>Jadwal Waktu Salat Presisi</h3>
+        <span class="sub-info">Dihitung murni dengan algoritma astronomi tanpa API eksternal</span>
+      </div>
+      <div id="prayer-grid" class="prayer-grid">
+        <!-- Di-render otomatis oleh app.js -->
+      </div>
+    </section>
+
+    <!-- Baris 3: Kompas Kiblat Visual, Fase Bulan & Data Ephemeris Matahari -->
+    <section class="astro-grid">
+      <!-- Kompas Kiblat -->
+      <article class="glass-card astro-box">
+        <div class="card-tag">ARAH KIBLAT & GEODESI</div>
+        <div class="canvas-wrapper">
+          <canvas id="qibla-canvas" width="220" height="220"></canvas>
+        </div>
+        <div class="astro-stats">
+          <div class="stat-item">
+            <span class="stat-label">Azimuth Kiblat</span>
+            <strong id="qibla-deg" class="stat-val gold-text">294.72°</strong>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Jarak ke Ka'bah</span>
+            <strong id="qibla-dist" class="stat-val">8,342 km</strong>
+          </div>
+        </div>
+      </article>
+
+      <!-- Fase Bulan -->
+      <article class="glass-card astro-box">
+        <div class="card-tag">FASE BULAN & ILUMINASI</div>
+        <div class="canvas-wrapper">
+          <canvas id="moon-canvas" width="220" height="220"></canvas>
+        </div>
+        <div class="astro-stats">
+          <div class="stat-item">
+            <span class="stat-label">Fase Saat Ini</span>
+            <strong id="moon-phase-name" class="stat-val gold-text">Cembung Awal</strong>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Iluminasi / Umur</span>
+            <strong id="moon-illum" class="stat-val">74.2% (11.2 hr)</strong>
+          </div>
+        </div>
+      </article>
+
+      <!-- Data Ephemeris Matahari -->
+      <article class="glass-card astro-box">
+        <div class="card-tag">EPHEMERIS MATAHARI (JEAN MEEUS)</div>
+        <div class="ephemeris-list">
+          <div class="eph-row">
+            <span>Julian Date (JD)</span>
+            <code id="eph-jd">2461346.5000</code>
+          </div>
+          <div class="eph-row">
+            <span>Deklinasi Matahari (δ)</span>
+            <code id="eph-decl">-14.4821°</code>
+          </div>
+          <div class="eph-row">
+            <span>Equation of Time (EoT)</span>
+            <code id="eph-eot">+16.38 mnt</code>
+          </div>
+          <div class="eph-row">
+            <span>Transit Meridian (Zuhur)</span>
+            <code id="eph-transit">11:42:18</code>
+          </div>
+          <div class="eph-row">
+            <span>Koreksi Bujur Daerah</span>
+            <code id="eph-lng-corr">-21.48 mnt</code>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

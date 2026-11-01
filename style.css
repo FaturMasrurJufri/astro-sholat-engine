@@ -1,0 +1,450 @@
+:root {
+  --bg-deep: #040d0a;
+  --bg-card: rgba(10, 26, 20, 0.72);
+  --bg-card-hover: rgba(16, 40, 31, 0.88);
+  --gold-primary: #d4af37;
+  --gold-light: #f3e5ab;
+  --gold-dim: rgba(212, 175, 55, 0.28);
+  --emerald-glow: #10b981;
+  --text-light: #f8fafc;
+  --text-muted: #94a3b8;
+  --radius-lg: 16px;
+  --radius-md: 10px;
+  --shadow-luxury: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 20px rgba(212, 175, 55, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-deep);
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+  color: var(--text-light);
+  min-height: 100vh;
+  line-height: 1.5;
+  padding-bottom: 4rem;
+}
+
+.container {
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* Header Mewah */
+.luxury-header {
+  border-bottom: 1px solid var(--gold-dim);
+  background: rgba(4, 13, 10, 0.85);
+  backdrop-filter: blur(14px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 1.25rem 0;
+  margin-bottom: 2rem;
+}
+
+.header-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.arabic-ornament {
+  display: block;
+  font-size: 1.1rem;
+  color: var(--gold-primary);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.15rem;
+}
+
+.app-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #ffffff 0%, var(--gold-light) 55%, var(--gold-primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.gold-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--gold-primary), #b38728);
+  -webkit-text-fill-color: #040d0a;
+  letter-spacing: 0.08em;
+}
+
+/* Identitas Developer & Efek Streaming Kelap-Kelip */
+.dev-identity {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.45rem;
+  padding: 0.25rem 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  border-radius: 999px;
+}
+
+.live-dot {
+  width: 9px;
+  height: 9px;
+  background-color: #ff2a5f;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 8px #ff2a5f, 0 0 16px #ff2a5f;
+  animation: streamBlink 1.15s infinite ease-in-out;
+}
+
+@keyframes streamBlink {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px #ff2a5f, 0 0 20px #ff2a5f;
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(0.8);
+    box-shadow: 0 0 2px #ff2a5f;
+  }
+}
+
+.dev-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+}
+
+.dev-text strong {
+  color: var(--gold-light);
+  font-weight: 700;
+}
+
+/* Header Controls */
+.header-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.control-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.control-item label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gold-primary);
+  font-weight: 600;
+}
+
+select, input {
+  background: rgba(6, 20, 15, 0.9);
+  border: 1px solid var(--gold-dim);
+  color: var(--text-light);
+  padding: 0.55rem 0.85rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+select:focus, input:focus {
+  border-color: var(--gold-primary);
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold-primary) 0%, #aa7c11 100%);
+  color: #040d0a;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: none;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+
+.btn-gold:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+}
+
+.btn-outline-gold {
+  width: 100%;
+  margin-top: 0.9rem;
+  background: rgba(212, 175, 55, 0.08);
+  color: var(--gold-light);
+  border: 1px solid var(--gold-dim);
+  padding: 0.55rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-outline-gold:hover {
+  background: rgba(212, 175, 55, 0.2);
+  border-color: var(--gold-primary);
+}
+
+/* Glass Cards */
+.glass-card {
+  background: var(--bg-card);
+  border: 1px solid var(--gold-dim);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-luxury);
+  backdrop-filter: blur(12px);
+}
+
+.card-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--gold-primary);
+  text-transform: uppercase;
+}
+
+/* Hero Section */
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.countdown-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.next-prayer-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-top: 0.2rem;
+  color: #ffffff;
+}
+
+.countdown-digits {
+  font-size: 2.75rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: var(--gold-light);
+  text-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+  margin: 0.3rem 0;
+}
+
+.current-time-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.card-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.status-pill {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.coord-inputs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65rem;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.input-field label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.input-field input {
+  width: 100%;
+}
+
+/* Prayer Times Grid */
+.prayer-section {
+  margin-bottom: 2.25rem;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+}
+
+.section-heading h3 {
+  font-size: 1.2rem;
+  color: var(--gold-light);
+}
+
+.sub-info {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.prayer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  gap: 0.85rem;
+}
+
+.prayer-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(212, 175, 55, 0.18);
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1rem;
+  text-align: center;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.prayer-card.active {
+  background: linear-gradient(160deg, rgba(212, 175, 55, 0.22) 0%, rgba(16, 185, 129, 0.15) 100%);
+  border: 1px solid var(--gold-primary);
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
+  transform: translateY(-3px);
+}
+
+.prayer-name {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.prayer-card.active .prayer-name {
+  color: var(--gold-light);
+  font-weight: 700;
+}
+
+.prayer-time {
+  font-size: 1.4rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: #ffffff;
+}
+
+/* Astro Instruments Grid */
+.astro-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.astro-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.canvas-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.astro-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 0.9rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.stat-val {
+  font-size: 1rem;
+  margin-top: 0.15rem;
+}
+
+.gold-text {
+  color: var(--gold-light);
+}
+
+.ephemeris-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.eph-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.55rem 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  font-size: 0.84rem;
+}
+
+.eph-row code {
+  color: var(--gold-light);
+  font-weight: 700;
+  font-family: monospace;
+}
+
+@media (max-width: 640px) {
+  .coord-inputs {
+    grid-template-columns: 1fr;
+  }
+  .countdown-digits {
+    font-size: 2.2rem;
+  }
+}

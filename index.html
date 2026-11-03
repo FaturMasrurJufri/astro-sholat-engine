@@ -45,6 +45,9 @@
         <button id="btn-gps" class="btn-gold" title="Deteksi Koordinat GPS Akurat">
           📍 Gunakan GPS
         </button>
+        <button id="btn-open-docs" class="btn-doc-menu" title="Buka Dokumentasi & Lisensi">
+          📖 Baca Saya
+        </button>
       </div>
     </div>
   </header>
@@ -57,7 +60,7 @@
         <h2 id="next-prayer-name" class="next-prayer-title">Maghrib</h2>
         <div id="countdown-timer" class="countdown-digits">00:00:00</div>
         <div class="current-time-row">
-          <span id="live-date">Senin, 2 Nov 2026</span>
+          <span id="live-date">Selasa, 3 Nov 2026</span>
           <span class="dot-sep">•</span>
           <span id="live-clock">00:00:00</span>
         </div>
@@ -167,6 +170,31 @@
       </article>
     </section>
   </main>
+
+  <!-- Modal Menu "Baca Saya" (README & LICENSE MIT) -->
+  <dialog id="modal-docs" class="doc-modal">
+    <div class="doc-modal-content">
+      <div class="doc-modal-header">
+        <div class="doc-tabs">
+          <button type="button" id="tab-readme" class="doc-tab active" data-doc="readme">
+            📄 README.md
+          </button>
+          <button type="button" id="tab-license" class="doc-tab" data-doc="license">
+            ⚖️ LICENSE (MIT)
+          </button>
+        </div>
+        <button type="button" id="btn-close-docs" class="btn-close-modal" aria-label="Tutup">✕</button>
+      </div>
+
+      <div class="doc-modal-body">
+        <div class="doc-toolbar">
+          <span id="doc-filename" class="doc-file-badge">File: README.md</span>
+          <button type="button" id="btn-copy-doc" class="btn-copy-file">📋 Salin Isi File</button>
+        </div>
+        <pre id="doc-viewer" class="doc-pre"></pre>
+      </div>
+    </div>
+  </dialog>
 
   <script type="module" src="./app.js"></script>
 </body>

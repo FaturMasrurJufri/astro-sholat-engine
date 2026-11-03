@@ -186,6 +186,24 @@ select:focus, input:focus {
   box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
 }
 
+/* Tombol Menu Baca Saya di Sudut Kanan Atas */
+.btn-doc-menu {
+  background: rgba(16, 185, 129, 0.14);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.58rem 1rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-doc-menu:hover {
+  background: rgba(16, 185, 129, 0.28);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
+}
+
 .btn-outline-gold {
   width: 100%;
   margin-top: 0.9rem;
@@ -438,6 +456,116 @@ select:focus, input:focus {
   color: var(--gold-light);
   font-weight: 700;
   font-family: monospace;
+}
+
+/* Modal Dokumentasi "Baca Saya" */
+.doc-modal {
+  margin: auto;
+  width: 92%;
+  max-width: 780px;
+  background: #061510;
+  color: var(--text-light);
+  border: 1px solid var(--gold-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
+  padding: 0;
+  overflow: hidden;
+}
+
+.doc-modal::backdrop {
+  background: rgba(2, 8, 6, 0.78);
+  backdrop-filter: blur(6px);
+}
+
+.doc-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(10, 26, 20, 0.95);
+  border-bottom: 1px solid var(--gold-dim);
+  padding: 0.75rem 1.25rem;
+}
+
+.doc-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.doc-tab {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+  border: 1px solid transparent;
+  padding: 0.45rem 0.95rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.doc-tab.active {
+  background: rgba(212, 175, 55, 0.18);
+  color: var(--gold-light);
+  border-color: var(--gold-primary);
+}
+
+.btn-close-modal {
+  background: rgba(255, 42, 95, 0.15);
+  color: #ff2a5f;
+  border: 1px solid rgba(255, 42, 95, 0.35);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.doc-modal-body {
+  padding: 1.25rem;
+}
+
+.doc-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.doc-file-badge {
+  font-size: 0.78rem;
+  color: var(--emerald-glow);
+  font-family: monospace;
+  font-weight: 700;
+}
+
+.btn-copy-file {
+  background: rgba(212, 175, 55, 0.14);
+  color: var(--gold-light);
+  border: 1px solid var(--gold-dim);
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-copy-file:hover {
+  background: rgba(212, 175, 55, 0.28);
+}
+
+.doc-pre {
+  background: rgba(3, 9, 7, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 1.1rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: #e2e8f0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 62vh;
+  overflow-y: auto;
 }
 
 @media (max-width: 640px) {

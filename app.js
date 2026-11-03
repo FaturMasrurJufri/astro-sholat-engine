@@ -3,41 +3,72 @@ import { AstroEngine } from "./engine.js";
 const DOCS_DATA = {
   readme: {
     filename: "README.md",
-    content: `# 🕌 AstroSholat PRO — Astronomical Prayer Times & Qibla Engine
+    content: `📖 Manual Penggunaan — AstroSholat PRO
 
-Dikembangkan oleh: fatur62 (https://github.com/fatur62)
+AstroSholat PRO adalah instrumen observatorium astronomi Islam berbasis web untuk menghitung jadwal waktu salat presisi, arah geodesi Kiblat dengan sensor kompas aktif, fase bulan, dan ephemeris matahari secara real-time tanpa ketergantungan API eksternal.
 
-AstroSholat PRO adalah aplikasi web observatorium astronomi Islam modern yang menghitung jadwal waktu salat presisi, arah geodesi Kiblat, data solar ephemeris, dan fase iluminasi bulan secara mandiri 100% di sisi klien (Zero External API) menggunakan algoritma astronomi Jean Meeus.
+1. Pengaturan Lokasi & Koordinat Pengamat
+Akurasi perhitungan waktu salat dan arah kiblat sangat bergantung pada titik koordinat lintang (latitude) dan bujur (longitude) Anda. Tersedia 3 metode penentuan lokasi:
+1. Deteksi GPS Otomatis (Paling Akurat):
+   - Ketuk tombol emas 📍 Gunakan GPS di bagian atas halaman.
+   - Saat muncul pop-up izin lokasi dari browser, pilih Izinkan (Allow).
+   - Label status pada kartu Parameter Observatorium akan berubah menjadi GPS Aktif Akurat, dan koordinat lintang, bujur, serta zona waktu akan terisi otomatis.
+2. Lokasi Cepat (Preset City):
+   - Gunakan menu dropdown Lokasi Cepat di header untuk memilih kota besar yang tersedia (Yogyakarta, Jakarta, Bandung, Surabaya, Makassar, atau Makkah).
+3. Input Koordinat Manual (Mode Observatorium):
+   - Pada kartu Parameter Observatorium, ketik langsung angka Lintang (Latitude), Bujur (Longitude), dan Zona Waktu (UTC) (Contoh: WIB = 7, WITA = 8, WIT = 9).
+   - Ketuk tombol Hitung Ulang Ephemeris untuk memperbarui seluruh kalkulasi.
 
----
+2. Pemilihan Standar Metode Hisab
+Setiap wilayah atau organisasi memiliki standar sudut depresi matahari (solar depression angle) yang berbeda untuk menentukan waktu Subuh dan Isya.
+• Buka menu dropdown Metode Hisab di bagian atas:
+  ◦ Kemenag RI (20° / 18°): Standar resmi Kementerian Agama Republik Indonesia & MABIMS (Direkomendasikan untuk wilayah Indonesia).
+  ◦ Muslim World League (18° / 17°): Standar Eropa, Timur Jauh, dan sebagian AS.
+  ◦ ISNA (15° / 15°): Standar Amerika Utara.
+  ◦ Umm al-Qura Makkah (18.5°): Standar Semenanjung Arab (Isya dihitung 90 menit setelah Magrib).
+  ◦ Otoritas Mesir (19.5° / 17.5°): Standar Afrika dan Timur Tengah.
 
-## ✨ FITUR UNGGULAN
-1. Perhitungan Ephemeris Matahari Murni (Zero API):
-   - Menghitung Julian Date (JD), Deklinasi Matahari, dan Equation of Time (EoT).
-   - Mendukung 5 metode hisab: Kemenag RI, MWL, ISNA, Umm al-Qura, dan Mesir.
-2. Kompas Kiblat Interaktif (Live Magnetometer Sensor):
-   - Menggunakan Great Circle Bearing dan rumus jarak Haversine.
-   - Terintegrasi dengan sensor kompas HP (DeviceOrientation API).
-   - Fitur Qibla Lock-On: Menyala hijau zamrud saat lurus menghadap Ka'bah.
-3. Visualisasi Fase & Iluminasi Bulan di atas HTML5 Canvas 2D.
+3. Membaca Jadwal Salat & Hitung Mundur (Countdown)
+• Kartu Waktu Salat Berikutnya: Menampilkan nama waktu salat terdekat yang akan datang beserta hitung mundur waktu (jam:menit:detik) secara real-time.
+• Deretan Kartu 8 Waktu: Menampilkan waktu Imsak, Subuh, Terbit, Dhuha, Zuhur, Asar, Maghrib, dan Isya.
+• Kartu Menyala (Sorotan Emas-Zamrud): Menandakan waktu salat berikutnya yang sedang ditunggu. Seluruh waktu salat telah menyertakan waktu Ihtiyat (pengaman 2 menit) sesuai kaidah ilmu falak, kecuali waktu Terbit.
 
----
+4. Menggunakan Kompas Kiblat Live (Sensor Magnetometer)
+Fitur ini mengubah ponsel Anda menjadi kompas kiblat digital interaktif.
 
-## 📖 MANUAL PENGGUNAAN SINGKAT
+Langkah Penggunaan:
+1. Pastikan lokasi GPS Anda sudah sesuai (disarankan menekan tombol 📍 Gunakan GPS terlebih dahulu).
+2. Gulir ke kartu Kompas Kiblat Live, lalu ketuk tombol 🧭 Aktifkan Sensor Kompas HP. (Khusus pengguna iPhone/iOS, ketuk Allow saat muncul permintaan izin akses sensor gerak/orientasi).
+3. Pegang ponsel Anda secara mendatar (sejajar dengan permukaan lantai) dan jauhkan dari benda logam atau casing bermagnet agar sensor tidak terganggu.
+4. Putar badan Anda secara perlahan:
+   - Huruf U merah menunjuk ke arah Utara Magnetik Bumi.
+   - Jarum Emas menunjuk ke arah Ka'bah (Makkah).
+   - Segitiga Kecil di Puncak Atas adalah penanda arah hadap ujung atas ponsel Anda.
+5. Tanda Lurus Kiblat (Qibla Lock-On): Terus putar badan Anda hingga ujung lancip Jarum Emas tepat bertemu dengan Segitiga di puncak atas lingkaran. Saat posisi sudah lurus (toleransi ± 3.5°):
+   - Lingkaran dan jarum kompas akan otomatis berubah warna menjadi Hijau Zamrud.
+   - Label status di kanan atas kartu akan berubah menjadi ★ Lurus Kiblat!.
 
-1. PENGATURAN LOKASI:
-   - Ketuk tombol "📍 Gunakan GPS" di bagian atas untuk mengunci koordinat otomatis, atau pilih kota pada menu "Lokasi Cepat".
-2. KOMPAS KIBLAT LIVE:
-   - Ketuk tombol "🧭 Aktifkan Sensor Kompas HP".
-   - Pegang ponsel mendatar sejajar lantai dan jauhkan dari benda bermagnet.
-   - Putar badan Anda hingga ujung Jarum Emas tepat bertemu segitiga di puncak atas lingkaran (status berubah menjadi "★ Lurus Kiblat!").
-   - Jika kompas kurang akurat, gerakkan HP membentuk angka 8 di udara selama 5 detik.`
+Cara Kalibrasi Jika Kompas Kurang Akurat:
+Jika arah Utara (U) terasa melenceng, gerakkan ponsel Anda membentuk pola angka 8 (♾️) di udara selama 3–5 detik untuk menyetel ulang sensor magnetometer bawaan ponsel.
+
+5. Membaca Fase Bulan & Data Ephemeris Matahari
+• Kartu Fase Bulan & Iluminasi:
+  ◦ Menampilkan visualisasi bentuk sabit atau purnama bulan pada hari ini secara akurat.
+  ◦ Iluminasi / Umur: Menunjukkan persentase permukaan bulan yang terkena cahaya matahari serta umur bulan dalam satuan hari sejak fase Ijtimak (Bulan Baru).
+• Kartu Ephemeris Matahari (Jean Meeus): Disediakan khusus untuk keperluan edukasi ilmu falak dan astronomi:
+  ◦ Julian Date (JD): Angka hari astronomi kontinu sejak 1 Januari 4713 SM.
+  ◦ Deklinasi Matahari (δ): Posisi sudut matahari terhadap garis khatulistiwa langit (positif di utara, negatif di selatan).
+  ◦ Equation of Time (EoT): Selisih waktu antara jam matahari sejati dengan jam rata-rata standar.
+  ◦ Transit Meridian: Waktu tepat saat matahari berada di titik kulminasi atas (awal waktu Zuhur sebelum ihtiyat).
+  ◦ Koreksi Bujur Daerah: Selisih menit antara garis bujur lokasi Anda dengan garis bujur standar zona waktu.
+
+fatur62@gmail.com`
   },
   license: {
     filename: "LICENSE",
     content: `MIT License
 
-Copyright (c) 2026 fatur62
+Copyright (c) 2026 fatur62 (fatur62@gmail.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
